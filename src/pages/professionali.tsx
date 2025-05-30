@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Box, Typography, Container, Grid, Tabs, Tab, TextField, Button, Chip, FormControl, InputLabel, Select, MenuItem } from '@mui/material';
 import { Search as SearchIcon, FilterList as FilterListIcon, Place as PlaceIcon, Verified as VerifiedIcon } from '@mui/icons-material';
 import '../styles.css';
+import ProfessionaliList from '../components/ProfessionaliList';
 
 // Componente principale per la sezione PROFESSIONALI
 const ProfessionaliPage: React.FC = () => {
@@ -11,6 +12,7 @@ const ProfessionaliPage: React.FC = () => {
   const [selectedCity, setSelectedCity] = useState<string>('');
   const [selectedSpecialty, setSelectedSpecialty] = useState<string>('');
   const [onlyVerified, setOnlyVerified] = useState<boolean>(false);
+  const [showRegistrationForm, setShowRegistrationForm] = useState<boolean>(false);
   
   // Dati di esempio per i professionisti (da sostituire con dati reali da API/Supabase)
   const [professionisti, setProfessionisti] = useState<any[]>([
@@ -87,6 +89,13 @@ const ProfessionaliPage: React.FC = () => {
     
     return true;
   });
+
+  // Gestione del pulsante di registrazione
+  const handleRegistrationClick = () => {
+    // In un'implementazione reale, questo potrebbe navigare a una pagina di registrazione
+    // o aprire un modale con il form di registrazione
+    setShowRegistrationForm(true);
+  };
   
   return (
     <Container maxWidth="lg" sx={{ py: 4 }}>
@@ -113,21 +122,36 @@ const ProfessionaliPage: React.FC = () => {
       
       {/* H - Header di Navigazione */}
       <Box className="thepath-navigation" sx={{ mb: 4 }}>
-        <Tabs 
-          value={activeTab} 
-          onChange={handleTabChange} 
-          variant="scrollable"
-          scrollButtons="auto"
-          sx={{ 
-            mb: 2,
-            '& .MuiTab-root': { color: '#E0E0E0' },
-            '& .Mui-selected': { color: '#FFFFFF', backgroundColor: '#8C65F7', borderRadius: '4px' }
-          }}
-        >
-          {categorie.map((categoria, index) => (
-            <Tab key={index} label={categoria} />
-          ))}
-        </Tabs>
+        <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', mb: 2 }}>
+          <Tabs 
+            value={activeTab} 
+            onChange={handleTabChange} 
+            variant="scrollable"
+            scrollButtons="auto"
+            sx={{ 
+              '& .MuiTab-root': { color: '#E0E0E0' },
+              '& .Mui-selected': { color: '#FFFFFF', backgroundColor: '#8C65F7', borderRadius: '4px' }
+            }}
+          >
+            {categorie.map((categoria, index) => (
+              <Tab key={index} label={categoria} />
+            ))}
+          </Tabs>
+          
+          <Button 
+            variant="contained" 
+            onClick={handleRegistrationClick}
+            sx={{ 
+              backgroundColor: '#8C65F7',
+              whiteSpace: 'nowrap',
+              '&:hover': {
+                backgroundColor: '#7550e3'
+              }
+            }}
+          >
+            Registrati come Professionista
+          </Button>
+        </Box>
         
         <Box className="filters-container" sx={{ display: 'flex', flexWrap: 'wrap', gap: 2, alignItems: 'center' }}>
           <TextField
@@ -146,7 +170,7 @@ const ProfessionaliPage: React.FC = () => {
             <Select
               value={selectedCity}
               label="Città"
-              onChange={(e) => setSelectedCity(e.target.value)}
+              onChange={(e) => setSelectedCity(e.target.value as string)}
             >
               <MenuItem value="">Tutte</MenuItem>
               <MenuItem value="Milano">Milano</MenuItem>
@@ -161,7 +185,7 @@ const ProfessionaliPage: React.FC = () => {
             <Select
               value={selectedSpecialty}
               label="Specialità"
-              onChange={(e) => setSelectedSpecialty(e.target.value)}
+              onChange={(e) => setSelectedSpecialty(e.target.value as string)}
             >
               <MenuItem value="">Tutte</MenuItem>
               <MenuItem value="Mixing">Mixing</MenuItem>
@@ -191,147 +215,7 @@ const ProfessionaliPage: React.FC = () => {
       </Box>
       
       {/* E - Elenco Entità */}
-      <Box className="thepath-entities-list" sx={{ mb: 4 }}>
-        <Grid container spacing={3}>
-          {professionistiFiltrati.map((professionista) => (
-            <Grid item xs={12} sm={6} md={4} key={professionista.id}>
-              <Box 
-                className="entity-card" 
-                sx={{ 
-                  p: 2, 
-                  borderRadius: 2, 
-                  backgroundColor: '#2D3A4B',
-                  border: '1px solid #3D4A5B',
-                  boxShadow: '0 4px 8px rgba(0,0,0,0.2)',
-                  height: '100%',
-                  display: 'flex',
-                  flexDirection: 'column'
-                }}
-              >
-                <Box sx={{ display: 'flex', mb: 2 }}>
-                  <Box 
-                    className="entity-image" 
-                    sx={{ 
-                      width: 80, 
-                      height: 80, 
-                      borderRadius: '8px',
-                      overflow: 'hidden',
-                      mr: 2,
-                      flexShrink: 0
-                    }}
-                  >
-                    <img 
-                      src={professionista.immagine} 
-                      alt={professionista.nome} 
-                      style={{ width: '100%', height: '100%', objectFit: 'cover' }}
-                    />
-                  </Box>
-                  
-                  <Box className="entity-info" sx={{ flexGrow: 1 }}>
-                    <Box sx={{ display: 'flex', alignItems: 'center', mb: 0.5 }}>
-                      <Typography variant="h6" className="entity-name" sx={{ fontWeight: 600, mr: 1 }}>
-                        {professionista.nome}
-                      </Typography>
-                      {professionista.verificato && (
-                        <VerifiedIcon sx={{ color: '#8C65F7', fontSize: 18 }} />
-                      )}
-                    </Box>
-                    
-                    <Box className="entity-metadata" sx={{ mb: 1 }}>
-                      <Typography variant="body2" color="textSecondary">
-                        {professionista.ruolo} • {professionista.citta}
-                      </Typography>
-                    </Box>
-                    
-                    <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 0.5, mb: 1 }}>
-                      {professionista.specialita.slice(0, 2).map((spec: string, i: number) => (
-                        <Chip 
-                          key={i} 
-                          label={spec} 
-                          size="small" 
-                          sx={{ 
-                            backgroundColor: '#1E2A3B', 
-                            borderColor: '#4D5A6B',
-                            color: '#E0E0E0',
-                            fontSize: '0.75rem'
-                          }} 
-                        />
-                      ))}
-                      {professionista.specialita.length > 2 && (
-                        <Chip 
-                          label={`+${professionista.specialita.length - 2}`} 
-                          size="small" 
-                          sx={{ 
-                            backgroundColor: '#1E2A3B', 
-                            borderColor: '#4D5A6B',
-                            color: '#E0E0E0',
-                            fontSize: '0.75rem'
-                          }} 
-                        />
-                      )}
-                    </Box>
-                    
-                    <Box className="entity-stats" sx={{ display: 'flex', alignItems: 'center' }}>
-                      <Typography variant="body2" sx={{ display: 'flex', alignItems: 'center' }}>
-                        {'★'.repeat(Math.round(professionista.rating))}
-                        <span style={{ marginLeft: '4px', color: '#B0B0B0' }}>
-                          ({professionista.rating})
-                        </span>
-                      </Typography>
-                    </Box>
-                  </Box>
-                </Box>
-                
-                <Typography 
-                  className="entity-description" 
-                  variant="body2" 
-                  sx={{ 
-                    mb: 2,
-                    overflow: 'hidden',
-                    textOverflow: 'ellipsis',
-                    display: '-webkit-box',
-                    WebkitLineClamp: 3,
-                    WebkitBoxOrient: 'vertical',
-                    flexGrow: 1
-                  }}
-                >
-                  {professionista.bio}
-                </Typography>
-                
-                <Box sx={{ display: 'flex', justifyContent: 'space-between', mt: 'auto' }}>
-                  <Button 
-                    variant="contained" 
-                    className="action-button primary"
-                    sx={{ 
-                      backgroundColor: '#8C65F7',
-                      '&:hover': {
-                        backgroundColor: '#7550e3'
-                      }
-                    }}
-                  >
-                    Visualizza Profilo
-                  </Button>
-                  
-                  <Button 
-                    variant="outlined" 
-                    className="action-button secondary"
-                    sx={{ 
-                      borderColor: '#4D5A6B',
-                      color: '#FFFFFF',
-                      '&:hover': {
-                        borderColor: '#8C65F7',
-                        backgroundColor: 'rgba(140, 101, 247, 0.1)'
-                      }
-                    }}
-                  >
-                    Contatta
-                  </Button>
-                </Box>
-              </Box>
-            </Grid>
-          ))}
-        </Grid>
-      </Box>
+      <ProfessionaliList professionisti={professionistiFiltrati} />
       
       {/* T - Transizione e Tornare */}
       <Box className="thepath-navigation-footer" sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', mt: 4 }}>
