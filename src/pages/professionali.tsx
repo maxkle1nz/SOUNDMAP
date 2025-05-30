@@ -1,8 +1,9 @@
-import React, { useState, useEffect } from 'react';
-import { Box, Typography, Container, Grid, Tabs, Tab, TextField, Button, Chip, FormControl, InputLabel, Select, MenuItem } from '@mui/material';
+import React, { useState } from 'react';
+import { Box, Typography, Container, Grid, Tabs, Tab, TextField, Button, Chip, FormControl, InputLabel, Select, MenuItem, Dialog } from '@mui/material';
 import { Search as SearchIcon, FilterList as FilterListIcon, Place as PlaceIcon, Verified as VerifiedIcon } from '@mui/icons-material';
 import '../styles.css';
 import ProfessionaliList from '../components/ProfessionaliList';
+import RegistrazioneProfessionistaThePath from '../components/RegistrazioneProfessionistaThePath';
 
 // Componente principale per la sezione PROFESSIONALI
 const ProfessionaliPage: React.FC = () => {
@@ -92,9 +93,12 @@ const ProfessionaliPage: React.FC = () => {
 
   // Gestione del pulsante di registrazione
   const handleRegistrationClick = () => {
-    // In un'implementazione reale, questo potrebbe navigare a una pagina di registrazione
-    // o aprire un modale con il form di registrazione
     setShowRegistrationForm(true);
+  };
+  
+  // Chiusura del form di registrazione
+  const handleCloseRegistration = () => {
+    setShowRegistrationForm(false);
   };
   
   return (
@@ -275,6 +279,22 @@ const ProfessionaliPage: React.FC = () => {
           hanno confermato le loro credenziali e competenze.
         </Typography>
       </Box>
+      
+      {/* Dialog per il form di registrazione */}
+      <Dialog 
+        open={showRegistrationForm} 
+        onClose={handleCloseRegistration}
+        fullWidth
+        maxWidth="md"
+        PaperProps={{
+          sx: {
+            backgroundColor: '#1E2A3B',
+            color: '#FFFFFF'
+          }
+        }}
+      >
+        <RegistrazioneProfessionistaThePath />
+      </Dialog>
     </Container>
   );
 };
