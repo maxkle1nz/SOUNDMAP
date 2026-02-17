@@ -7,6 +7,7 @@ import MusicNoteIcon from '@mui/icons-material/MusicNote';
 import PeopleIcon from '@mui/icons-material/People';
 import EventIcon from '@mui/icons-material/Event';
 import AccountCircleIcon from '@mui/icons-material/AccountCircle';
+import SportsEsportsIcon from '@mui/icons-material/SportsEsports';
 
 import MappaInterattiva from './MappaInterattiva';
 import RegistrazioneArtista from './RegistrazioneArtista';
@@ -15,6 +16,7 @@ import RegistrazioneLocale from './RegistrazioneLocale';
 import RegistrazioneAscoltatore from './RegistrazioneAscoltatore';
 import PannelloFiltri from './PannelloFiltri';
 import RegistrazioneSelezione from '../pages/registrazione-selezione';
+import SnakePage from '../pages/snake';
 
 // Importação lazy da página de registro unificada
 const RegistrazioneUnificataPage = lazy(() => import('../pages/registrazione-unificata'));
@@ -71,6 +73,12 @@ const Header = ({ isLoggedIn }) => {
           </ListItemIcon>
           <ListItemText primary="Eventi" />
         </ListItem>
+        <ListItem button onClick={() => handleNavigation('/snake')}>
+          <ListItemIcon>
+            <SportsEsportsIcon />
+          </ListItemIcon>
+          <ListItemText primary="Snake" />
+        </ListItem>
       </List>
       <Divider />
       <List>
@@ -124,6 +132,7 @@ const Header = ({ isLoggedIn }) => {
             <Button color="inherit" component={Link} to="/scene">Scene</Button>
             <Button color="inherit" component={Link} to="/artisti">Artisti</Button>
             <Button color="inherit" component={Link} to="/eventi">Eventi</Button>
+            <Button color="inherit" component={Link} to="/snake">Snake</Button>
             {!isLoggedIn ? (
               <>
                 <Button color="inherit" component={Link} to="/login">Accedi</Button>
@@ -320,6 +329,7 @@ export const App = () => {
         <Route path="/scene" element={<Layout><ScenePage /></Layout>} />
         <Route path="/artisti" element={<Layout><ArtistiPage /></Layout>} />
         <Route path="/eventi" element={<Layout><EventiPage /></Layout>} />
+        <Route path="/snake" element={<Layout><SnakePage /></Layout>} />
         <Route path="/login" element={<Layout><LoginPage /></Layout>} />
         <Route path="/registrazione-selezione" element={<Layout><RegistrazioneSelezione /></Layout>} />
         <Route path="/registrazione/artista" element={<Layout><Container sx={{ py: 4 }}><RegistrazioneArtista /></Container></Layout>} />

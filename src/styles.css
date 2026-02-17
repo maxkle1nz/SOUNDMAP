@@ -320,6 +320,61 @@ button {
   background-color: #f39c12;
 }
 
+/* Snake */
+.snake-grid {
+  display: grid;
+  grid-template-columns: repeat(20, 1fr);
+  width: min(100%, 520px);
+  aspect-ratio: 1 / 1;
+  margin: 0 auto;
+  border: 1px solid #d9d9d9;
+  background-color: #fff;
+}
+
+.snake-cell {
+  border: 1px solid #f0f0f0;
+  background-color: #fafafa;
+}
+
+.snake-body {
+  background-color: #2c3e50;
+  border-color: #2c3e50;
+}
+
+.snake-head {
+  background-color: #1f2d3a;
+  border-color: #1f2d3a;
+}
+
+.snake-food {
+  background-color: #e74c3c;
+  border-color: #e74c3c;
+}
+
+.snake-pad {
+  margin-top: 1rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.snake-pad-row {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.snake-pad-spacer {
+  width: 44px;
+}
+
+@media (max-width: 600px) {
+  .snake-grid {
+    max-width: 340px;
+  }
+}
+
 /* Painel de filtros */
 .pannello-filtri {
   background-color: white;
